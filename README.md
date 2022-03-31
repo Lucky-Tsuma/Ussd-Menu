@@ -30,4 +30,4 @@ If age is greater than 30: 'welcome ${username}, age gracefully.'
 14. Having set the simulator, go back to the USSD menu on the sidebar and click create channel.
 15. Paste the url from ngrok on the callback url.
 16. Choose a channel number (They will be suggested). Then click create channel.
-17. You can then run the app on your simulator. use *384*'your channel no'# example : *384*976778#
+17. You can then run the app on your simulator. use //*384*'your channel no'# example : *384*976778#
