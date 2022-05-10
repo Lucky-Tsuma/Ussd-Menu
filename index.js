@@ -11,37 +11,73 @@ const port = process.env.PORT
 
 const UssdMenu = require("ussd-menu-builder")
 let menu = new UssdMenu()
-let name
+let sessions = {}
+menu.sessionConfig({
+    start: (sessionId) => {
+        return new Promise((resolve) => {
+            if(!(sessionId in sessions)) sessions[sessionId] = {}
+            resolve(sessions)
+        })
+    },
+    end: (sessionId) => {
+        return new Promise((resolve) => {
+            delete sessions[sessionId]
+            resolve(sessions)
+        })
+    },
+    set: (sessionId, key, value) => {
+        return new Promise((resolve) => {
+            sessions[sessionId][key] = value
+            resolve()
+        })
+    },
+    get: (sessionId, key) => {
+        return new Promise((resolve) => {
+            let value = sessions[sessionId][key]
+            resolve(value)
+        })
+    }
+})
 
 menu.startState({
     run: () => {  
         menu.con("Welcome. Please enter your name:")
     },
-    
     next: {
         "*[a-zA-Z]+": "enter.age"
-    }
+    },
+    defaultNext: "invalidOption"
 })
 
 menu.state("enter.age", {
     run: () => {
-        name = menu.val
-        menu.con("Enter your age:")
+        let name = menu.val
+        menu.session.set("name", name).then(() => {
+            menu.con("Enter your age:")
+        })
     },
     next: {
       "*\\d+": "result"
-    }
+    },
+    defaultNext: "invalidOption"
 })
 
 menu.state("result", {
   run: () => {
     let age = menu.val
-    age > 30 ? menu.end(`Welcome ${name } age gracefully`) : menu.end(`Welcome young ${name } the future awaits`)
+    menu.session.get("name").then(name => {
+        age > 30 ? menu.end(`Welcome ${name } age gracefully`) : menu.end(`Welcome young ${name } the future awaits`)
+    })
   }
 })
 
-// Registering USSD handler with Express
+menu.state("invalidOption", {
+    run: () => {
+        menu.end("You entered an invalid option. Please try again!")
+    }
+})
 
+// Registering USSD handler with Express
 app.post("/", async (req, res) => {
     // Read the variables sent via POST from Africas talking / postman etc
     let args = {
