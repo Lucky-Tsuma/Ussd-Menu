@@ -13,7 +13,7 @@ If age is greater than 30: 'welcome ${username}, age gracefully.'
 ![Screenshot from 2022-03-29 18-39-15](https://user-images.githubusercontent.com/55623011/160650689-b4adbe00-250a-4a90-9b99-e15bd86fdc11.png)
 
 
-#Instructions
+## Instructions
 1. Create a new folder and clone this repository in it: git clone https://github.com/Lucky-Tsuma/Ussd-Menu.git
 2. run 'npm install' to install all node modules needed to run the project
 3. At the root of the project, create a new file '.env' and add this line 'PORT="port number here"
