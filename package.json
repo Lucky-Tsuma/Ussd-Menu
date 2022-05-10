@@ -4,16 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "npx eslint \"./**\" --fix"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lucky Tsuma",
   "license": "ISC",
   "dependencies": {
     "africastalking": "^0.5.5",
     "body-parser": "^1.19.2",
     "dotenv": "^16.0.0",
+    "eslint": "^8.15.0",
     "express": "^4.17.3",
     "ussd-menu-builder": "^1.2.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucky-Tsuma/Ussd-Menu.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lucky-Tsuma/Ussd-Menu/issues"
+  },
+  "homepage": "https://github.com/Lucky-Tsuma/Ussd-Menu#readme"
 }
