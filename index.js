@@ -14,27 +14,31 @@ let menu = new UssdMenu()
 let sessions = {}
 menu.sessionConfig({
     start: (sessionId) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             if(!(sessionId in sessions)) sessions[sessionId] = {}
             resolve(sessions)
+            reject(new Error("error"))
         })
     },
     end: (sessionId) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             delete sessions[sessionId]
             resolve(sessions)
+            reject(new Error("error"))
         })
     },
     set: (sessionId, key, value) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             sessions[sessionId][key] = value
             resolve()
+            reject(new Error("error"))
         })
     },
     get: (sessionId, key) => {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             let value = sessions[sessionId][key]
             resolve(value)
+            reject(new Error("error"))
         })
     }
 })
@@ -75,6 +79,12 @@ menu.state("invalidOption", {
     run: () => {
         menu.end("You entered an invalid option. Please try again!")
     }
+})
+
+// Errors occuring during state resolution or rejected by their promises will trigger the error event for convinience so we can handle all errors in a single place
+menu.on("error", err => {
+    console.log(`Error: ${err}`)
+    menu.end("There was an error processing your request")
 })
 
 // Registering USSD handler with Express
